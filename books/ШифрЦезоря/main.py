@@ -44,18 +44,3 @@ message = getMessage()
 key = getKey()
 print('Преобразованный текст:')
 print(getTranslatedMessage(mode, message, key))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
