@@ -1,5 +1,4 @@
 # Крестики нолики
-
 import random
 
 def drawBoard(board):
@@ -29,7 +28,6 @@ def makeMove(border, letter, move):
     border[move] = letter
 
 def isWinner(bo, le):
-
     return((bo[7] == le and bo[8] == le and bo[9] == le) or
            (bo[4] == le and bo[5] == le and bo[6] == le) or
            (bo[1] == le and bo[2] == le and bo[3] == le) or
@@ -39,17 +37,14 @@ def isWinner(bo, le):
            (bo[7] == le and bo[5] == le and bo[3] == le) or
            (bo[9] == le and bo[5] == le and bo[1] == le))
 
-
 def getBoardCopy(board):
     boardCopy = []
     for i in board:
         boardCopy.append(i)
     return boardCopy
 
-
 def isSpaceFree(board, move):
     return board[move] == ' '
-
 
 def getPlayerMove(board):
     move = ''
@@ -57,7 +52,6 @@ def getPlayerMove(board):
         print('Ваш следующий ход? (1-9)')
         move = input()
     return int(move)
-
 
 def chooseRandomMoveFromList(board, movesList):
     possibleMoves = []
@@ -68,7 +62,6 @@ def chooseRandomMoveFromList(board, movesList):
         return random.choice(possibleMoves)
     else:
         return None
-
 
 def getComputerMove(board, computerLetter):
     if computerLetter == 'X':
@@ -97,22 +90,18 @@ def getComputerMove(board, computerLetter):
         return 5
     return chooseRandomMoveFromList(board, [2, 4, 6, 8])
 
-
 def isBoaedFull(board):
     for i in range(1, 10):
         if isSpaceFree(board, i):
             return False
     return True
 
-
 print('Игра "Крестики-нолики"')
-
 while True:
     theBoard = [' '] * 10
     playerLetter, computerLetter = inputPlayerLetter()
     turn = whoGoesFirst()
     gameIsPlaying = True
-
     while gameIsPlaying:
         if turn == 'Человек':
             drawBoard(theBoard)
