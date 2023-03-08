@@ -17,9 +17,13 @@ def getMessage():
 
 def getKey():
     while True:
-        print(f'Введите ключ шифрования от 5 до {MAX_KEY_SIZE}')
+        print(f'Введите ключ шифрования от 1 до {MAX_KEY_SIZE}')
         key = int(input())
         if (key >= 1 and key <= MAX_KEY_SIZE):
+            return key
+        else:
+            print('Что-то не так')
+            key = 5
             return key
 
 def getTranslatedMessage(mode, message, key):
