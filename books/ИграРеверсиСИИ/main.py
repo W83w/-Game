@@ -88,7 +88,7 @@ def getScoreOfBoard(board):
                 oscore += 1
     return (f"'X':{xscore}, 'O':{oscore}") #
 
-def enterPlayerTitle():
+def enterPlayerTile():
 
 
     title = ''
@@ -136,7 +136,7 @@ def isOnCorner(x, y):
 
     return (x == 0 or x == WIDTH - 1) and (y == 0 or y == HEIGHT - 1)
 
-def getPlayerMove(board, playerTitle):
+def getPlayerMove(board, playerTile):
 
 
         DIGITSITO8 = '1 2 3 4 5 6 7 8'.split()
@@ -149,18 +149,115 @@ def getPlayerMove(board, playerTitle):
             if len(move) == 2 and move[0] in DIGITSITO8 and move[1] in DIGITSITO8:
                 x = int(move[0]) - 1
                 y = int(move[1]) - 1
-                if isValidMove(board, playerTitle, x, y) == False:
+                if isValidMove(board, playerTile, x, y) == False:
                     continue
                 else:
                     break
+            else:
+                print('Это недопустимый ход. Введите номер столбца (1 - 8) и номер ряда (1 - 8).')
+                print('К примеру, значение 81 перемешает в верхний правый угол.')
+
+                return [x, y]
+
+def getComputerMove(board, computerTile):
+
+
+    possibleMoves = getValidMoves(board, computerTile)
+    random.shuffle(possibleMoves)
+
+
+    for x, y in possibleMoves:
+        if isOnCorner(x, y):
+            return [x, y]
+
+
+    bestScore = -1
+    for x, y in possibleMoves:
+        boardCopy = getBoardCopy(board)
+        makeMove(boardCopy, computerTile, x, y)
+        score = getScoreOfBoard(boardCopy)[computerTile]
+        if score > bestScore:
+            bestMove = [x, y]
+            bestScore = score
+        return bestMove
+
+def printScore(board, playerTile, computerTile):
+    scores = getScoreOfBoard(board)
+    print('Ваш счет: %s. Счет компьютера: %s.' % (scores[playerTile], scores[computerTile]))
+
+def playGame(player, computerTile):
+    showHints = False
+    turn = whoGoesFirst()
+    print(turn + ' ходит первым.')
+
+
+    board = getNewBoard()
+    board[3][3] = 'X'
+    board[3][4] = 'O'
+    board[4][3] = 'O'
+    board[4][4] = 'X'
+
+    while True:
+        playerValidMoves = getValidMoves(board, playerTile)
+        computerValidMoves = getValidMoves(board, computerTile)
+
+        if playerValidMoves == [] and computerValidMoves == []:
+            return board
+
+        elif turn == 'Человек':
+            if playerValidMoves != []:
+                if showBints:
+                    validMovesBoard = getBoardWithValidMoves(board, playerTile)
+                    drawBoard(validMovesBoard)
+                else:
+                    drawBoard(board)
+                printScore(board, playerTile, computerTile)
+
+                move = getPlayerMove(board, playerTile)
+                if move == 'выход':
+                    print('Спасибо за игру!')
+                    sys.exit()
+                elif move == 'подсказка':
+                    showHints = not showHints
+                    continue
+                else:
+                    makeMove(board, playerTile, move[0], move[1])
+            turn = 'Компьютер'
+
+        elif turn == 'Компьютер':
+            if computerValidMoves != []:
+                drawBoard(board)
+                printScore(board, playerTile, computerTile)
+
+                input('Нажмите клавишу Enter для просмотра хода компьютера.')
+                move = getComputerMove(board, computerTile)
+                makeMove(board, computerTile, move[0], move[1])
+                turn = 'Человек'
 
 
 
+print('Приветствуем в игре "Реверси" !')
 
+playerTile, computerTile = enterPlayerTile()
 
+while True:
+    finalBoard = playerGame(playerTile, computerTile)
 
+    drawBoard(finalBoard)
+    scores = getScoreOfBoard(finalBoard)
+    print('X набрал %s очков. O набрал %s очков.' % (scores['X'], scores['O']))
+    if scores[playerTile] > scores[computerTile]:
+        print('Вы победили компьютер, обыграв его на %s очков! Поздравляем!' % (scores[computerTile] - \
+        scores[playerTile]))
+    elif scores[playerTile] < scores[computerTile]:
+        print('Вы проиграли. Компьютер обыграл человечество на %s очков.' % (scores[computerTile] - scores[playerTile]))
+    else:
+        print('Ничья! У человечества есть шанс')
 
-
+    print('Хотите сыграть еще раз? (да нет)')
+    if not input().lower().startswith('д'):
+        break
+    
 
 
 
