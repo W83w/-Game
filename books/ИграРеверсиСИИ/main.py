@@ -8,7 +8,7 @@ def drawBoard(board):
     print(' 12345678')
     print("+--------+")
     for y in range(HEIGHT):
-        print(f"{y + 1}", end='')
+        print('%s|' % (y + 1), end='')
         for x in range(WIDTH):
             print(board[x][y], end='')
         print('|%s' % (y + 1))
@@ -183,7 +183,7 @@ def getComputerMove(board, computerTile):
 
 def printScore(board, playerTile, computerTile):
     scores = getScoreOfBoard(board)
-    print('Ваш счет: %s. Счет компьютера: %s.' % (scores[playerTile], scores[computerTile]))
+    print(f'Ваш счет: {scores[playerTile]} Счет компьютера: {scores[computerTile]}')
 
 def playGame(playerTile, computerTile):
     showHints = False
@@ -206,7 +206,7 @@ def playGame(playerTile, computerTile):
 
         elif turn == 'Человек':
             if playerValidMoves != []:
-                if showBints:
+                if showHints:
                     validMovesBoard = getBoardWithValidMoves(board, playerTile)
                     drawBoard(validMovesBoard)
                 else:
