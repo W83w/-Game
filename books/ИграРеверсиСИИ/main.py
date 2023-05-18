@@ -97,10 +97,10 @@ def enterPlayerTile():
         tile = input().upper()
 
 
-    if tile == 'X':
-        return  ('X', 'O')
-    else:
-        return ('O', 'X')
+        if tile == 'X':  ####
+            return  ('X', 'O')
+        else:   ###
+            return ('O', 'X')
 
 def whoGoesFirst():
 
