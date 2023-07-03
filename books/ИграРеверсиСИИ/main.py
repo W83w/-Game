@@ -1,10 +1,12 @@
 # 'Реверси'
 import random
 import sys
-WIDTH = 8 # игровое поле содержит 8 клеток по ширине
-HEIGHT = 8 # 8 клеток по высоте
-def drawBoard(board):
 
+WIDTH = 8  # игровое поле содержит 8 клеток по ширине
+HEIGHT = 8  # 8 клеток по высоте
+
+
+def drawBoard(board):
     print(' 12345678')
     print("+--------+")
     for y in range(HEIGHT):
@@ -15,16 +17,15 @@ def drawBoard(board):
     print("+--------+")
     print(' 12345678')
 
-def getNewBoard():
 
+def getNewBoard():
     board = []
     for i in range(WIDTH):
         board.append([' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '])
     return board
 
+
 def isValidMove(board, tile, xstart, ystart):
-
-
     if board[xstart][ystart] != ' ' or not isOnBoard(xstart, ystart):
         return False
 
@@ -38,7 +39,7 @@ def isValidMove(board, tile, xstart, ystart):
         x, y = xstart, ystart
         x += xdirection
         y += ydirection
-        while isOnBoard (x, y) and  board[x][y] == otherTile:
+        while isOnBoard(x, y) and board[x][y] == otherTile:
 
             x += xdirection
             y += ydirection
@@ -55,20 +56,20 @@ def isValidMove(board, tile, xstart, ystart):
         return False
     return tilesToFlip
 
-def isOnBoard(x, y):
 
-    return x>=0 and x <= WIDTH - 1 and y >= 0 and y <= HEIGHT - 1
+def isOnBoard(x, y):
+    return x >= 0 and x <= WIDTH - 1 and y >= 0 and y <= HEIGHT - 1
+
 
 def getBoardWithValidMoves(board, tile):
-
     boardCopy = getBoardCopy(board)
 
     for x, y in getValidMoves(boardCopy, tile):
         boardCopy[x][y] = '.'
     return boardCopy
 
-def getValidMoves(board, tile):
 
+def getValidMoves(board, tile):
     validMoves = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
@@ -76,8 +77,8 @@ def getValidMoves(board, tile):
                 validMoves.append([x, y])
     return validMoves
 
-def getScoreOfBoard(board):
 
+def getScoreOfBoard(board):
     xscore = 0
     oscore = 0
     for x in range(WIDTH):
@@ -86,32 +87,29 @@ def getScoreOfBoard(board):
                 xscore += 1
             if board[x][y] == 'O':
                 oscore += 1
-    return (f"'X':{xscore}, 'O':{oscore}") #
+    return (f"'X':{xscore}, 'O':{oscore}")  #
+
 
 def enterPlayerTile():
-
-
     tile = ''
     while not (tile == 'X' or tile == 'O'):
         print('Вы играете за Х или О?')
         tile = input().upper()
 
-
         if tile == 'X':  ####
-            return  ('X', 'O')
-        else:   ###
+            return ('X', 'O')
+        else:  ###
             return ('O', 'X')
 
-def whoGoesFirst():
 
+def whoGoesFirst():
     if random.randint(0, 1) == 0:
         return 'Компьютер'
     else:
         return 'Человек'
 
+
 def makeMove(board, tile, xstart, ystart):
-
-
     tilesToFlip = isValidMove(board, tile, xstart, ystart)
 
     if tilesToFlip == False:
@@ -122,8 +120,8 @@ def makeMove(board, tile, xstart, ystart):
         board[x][y] = tile
     return True
 
-def getBoardCopy(board):
 
+def getBoardCopy(board):
     boardCopy = getNewBoard()
 
     for x in range(WIDTH):
@@ -132,13 +130,12 @@ def getBoardCopy(board):
 
     return boardCopy
 
-def isOnCorner(x, y):
 
+def isOnCorner(x, y):
     return (x == 0 or x == WIDTH - 1) and (y == 0 or y == HEIGHT - 1)
 
+
 def getPlayerMove(board, playerTile):
-
-
     DIGITSITO8 = '1 2 3 4 5 6 7 8'.split()
     while True:
         print('Укажите код, текст "выход" для завершения или "подсказка" для вывода подсказки')
@@ -159,17 +156,14 @@ def getPlayerMove(board, playerTile):
 
     return [x, y]
 
+
 def getComputerMove(board, computerTile):
-
-
     possibleMoves = getValidMoves(board, computerTile)
     random.shuffle(possibleMoves)
-
 
     for x, y in possibleMoves:
         if isOnCorner(x, y):
             return [x, y]
-
 
     bestScore = -1
     for x, y in possibleMoves:
@@ -181,15 +175,16 @@ def getComputerMove(board, computerTile):
             bestScore = score
     return bestMove
 
+
 def printScore(board, playerTile, computerTile):
     scores = getScoreOfBoard(board)
     print(f'Ваш счет: {scores[playerTile]} Счет компьютера: {scores[computerTile]}')
+
 
 def playGame(playerTile, computerTile):
     showHints = False
     turn = whoGoesFirst()
     print(turn + ' ходит первым.')
-
 
     board = getNewBoard()
     board[3][3] = 'X'
@@ -235,7 +230,6 @@ def playGame(playerTile, computerTile):
             turn = 'Человек'
 
 
-
 print('Приветствуем в игре "Реверси" !')
 
 playerTile, computerTile = enterPlayerTile()
@@ -248,7 +242,7 @@ while True:
     print('X набрал %s очков. O набрал %s очков.' % (scores['X'], scores['O']))
     if scores[playerTile] > scores[computerTile]:
         print('Вы победили компьютер, обыграв его на %s очков! Поздравляем!' % (scores[computerTile] - \
-        scores[playerTile]))
+                                                                                scores[playerTile]))
     elif scores[playerTile] < scores[computerTile]:
         print('Вы проиграли. Компьютер обыграл человечество на %s очков.' % (scores[computerTile] - scores[playerTile]))
     else:
@@ -257,73 +251,3 @@ while True:
     print('Хотите сыграть еще раз? (да нет)')
     if not input().lower().startswith('д'):
         break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
